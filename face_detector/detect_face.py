@@ -1,11 +1,19 @@
+"""
+MIT licence https://opensource.org/licenses/MIT
+
+Copyright (c) 2017 Jan Zikes zikesjan@gmail.com
+"""
+
 import argparse
 
 import cv2
 import matplotlib.pylab as plt
 import numpy as np
+from scipy.misc import imresize
 
 
 CASCADE_FILE_PATH = "haarcascade_frontalface_default.xml"
+DESIRED_IMAGE_SIZE = (224, 224, 3)
 
 
 def parse_args():
@@ -60,7 +68,9 @@ def crop_image(image, face_location):
     :return:
     :rtype:
     """
-    croped_image = image.crop(face_location).resize((224, 224))
+    x, y, w, h = face_location
+    croped_image = image[y:y + h, x:x + w, :]
+    croped_image = imresize(croped_image, DESIRED_IMAGE_SIZE)
     return croped_image
 
 
@@ -71,17 +81,18 @@ def main():
     image = cv2.imread(input_image_path)
     face_locations = locate_faces(image)
 
-    # optional
-    plot_located_face(image, face_locations)
-
     # TODO crop the image
     cropped_images = []
     for face in face_locations:
-        cropped_images.append(image, face)
+        cropped_images.append(crop_image(image, face))
 
     for crop in cropped_images:
+        # Store the cropped image
         plt.imshow(np.asarray(crop))
         plt.show()
+
+    # optional
+    plot_located_face(image, face_locations)
 
 
 if __name__ == '__main__':
