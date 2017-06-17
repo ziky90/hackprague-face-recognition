@@ -5,17 +5,17 @@ Copyright (c) 2017 Jan Zikes zikesjan@gmail.com
 """
 
 import argparse
-import os
 import glob
+import os
 
 import numpy as np
 import tensorflow as tf
+from PIL import Image
 from keras.applications.vgg16 import VGG16
 from keras.layers import Flatten, Dense
 from keras.models import Model
 from keras.optimizers import Adam
 from keras.preprocessing.image import ImageDataGenerator
-from PIL import Image
 
 NUM_CLASSES = 17
 LEARNING_RATE = 0.0001
@@ -72,6 +72,8 @@ def prepare_dataset(dataset_path):
         height_shift_range=0.2,
         zca_whitening=False)
     datagen.fit(x_data)
+    print datagen.mean
+    print datagen.std
     return datagen, x_data, y_data
 
 
@@ -103,7 +105,7 @@ def construct_vgg16_model():
     # build custom output dense layer
     net = base_net.output
     net = Flatten()(net)
-    net = Dense(NUM_CLASSES)(net)
+    net = Dense(NUM_CLASSES, activation='softmax')(net)
     return Model(inputs=base_net.input, outputs=net)
 
 
@@ -124,8 +126,9 @@ def perform_model_training(model, datagen, x_train, y_train):
     :return: Trained keras model
     :rtype: :class:`keras.models.Model`
     """
+    # TODO fix this using custom_categorical_crossentropy_on_logits
     model.compile(optimizer=Adam(lr=LEARNING_RATE),
-                  loss=custom_categorical_crossentropy_on_logits)
+                  loss='categorical_crossentropy')
     # fits the model on batches with real-time data augmentation:
     model.fit_generator(datagen.flow(x_train, y_train, batch_size=BATCH_SIZE),
                         steps_per_epoch=len(x_train) / 32, epochs=EPOCHS)
