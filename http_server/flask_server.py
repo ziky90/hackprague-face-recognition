@@ -7,13 +7,12 @@ Copyright (c) 2017 Jan Zikes zikesjan@gmail.com
 import base64
 
 import cv2
-from flask import Flask, request, jsonify, json
-from flask_cors import CORS
-from keras.models import load_model
-
 from face_classifier.main_predict_tools import predict_image
 from face_detector.face_detector_tools import locate_faces, crop_image
+from flask import Flask, request, jsonify, json
+from flask_cors import CORS
 from http_server.people_data_db_mock import RECORDS_DB
+from keras.models import load_model
 
 MODEL_PATH = 'model_long/model.h5'
 
@@ -53,7 +52,7 @@ def analyse_image_base64():
     Locate the face and classify it + add info from DB
     """
     data = request.data.replace('data:image/jpeg;base64', '')
-    # decode the base64 image
+    # FIXME hack to process base64 image (couldn't make it work directly)
     imgdata = base64.b64decode(data)
     filename = 'image_to_process.jpg'
     with open(filename, 'wb') as f:
@@ -95,7 +94,7 @@ def detect_face_base64():
     Detect all the possible faces with their locations.
     """
     data = request.data.replace('data:image/jpeg;base64', '')
-    # decode the base64 image
+    # FIXME hack to process base64 image (couldn't make it work directly)
     imgdata = base64.b64decode(data)
     filename = 'image_to_process.jpg'
     with open(filename, 'wb') as f:
