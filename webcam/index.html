@@ -9,13 +9,16 @@
 		h2, h3 { margin-top:0; }
 		form { margin-top: 15px; }
 		form > input { margin-right: 15px; }
-		#results { float:right; margin:20px; padding:20px; border:1px solid; background:#ccc; }
+		#results { float:right; margin:20px; border:1px solid; background:#ccc; }
 	</style>
 </head>
 <body>
-	<div id="results">Your captured image will appear here...</div>
 
 	<h1>Personalised content based on face recognition</h1>
+
+	<div id="results" style="position: relative;">
+		<div id="box" style="position: absolute; left: 20px; top: 20px; width: 200px; height: 200px; border: 1px solid green;"></div>
+		Your captured image will appear here...</div>
 
 	<div id="my_camera"></div>
 
@@ -34,12 +37,6 @@
 		});
 		Webcam.attach( '#my_camera' );
 	</script>
-
-	<!-- A button for taking snaps -->
-	<form>
-		<input type=button value="Take Large Snapshot" onClick="take_snapshot()">
-	</form>
-	<div id="response">Waiting for response...</div>
 
 	<!-- Code to handle taking the snapshot and displaying it locally -->
 	<script language="JavaScript">
