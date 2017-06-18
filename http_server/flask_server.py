@@ -41,7 +41,9 @@ def analyse_image():
     for pos, face in enumerate(face_locations):
         cropped = crop_image(image, face)
         prediction = predict_image(cropped)
-        results[pos] = (face, prediction, RECORDS_DB[prediction])
+        results[pos] = {'bbox': face,
+                        'class': prediction,
+                        'metadata': RECORDS_DB[prediction]}
 
     return jsonify(results)
 
