@@ -47,7 +47,7 @@ def analyse_image():
 
 
 @app.route('/analyse_image_base64', methods=['POST'])
-def analyse_image():
+def analyse_image_base64():
     """
     Locate the face and classify it + add info from DB
     """
@@ -80,7 +80,7 @@ def detect_face():
 
 
 @app.route('/detect_face_base64', methods=['POST'])
-def detect_face():
+def detect_face_base64():
     """
     Detect all the possible faces with their locations.
     """
