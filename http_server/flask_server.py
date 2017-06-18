@@ -10,6 +10,7 @@ from keras.models import load_model
 
 from face_classifier.main_predict_tools import predict_image
 from face_detector.face_detector_tools import locate_faces, crop_image
+from http_server.people_data_db_mock import RECORDS_DB
 
 MODEL_PATH = 'model/model.h5'
 
@@ -56,10 +57,22 @@ def detect_face():
 
 @app.route('/predict_face', methods=['POST'])
 def predict_face():
+    """
+    Predict the person given the cropped patch.
+    """
     input_face_path = request.data
     image = cv2.imread(input_face_path)
     prediction = predict_image(image)
     return jsonify(prediction)
+
+
+@app.route('/get_person_data', methods=['POST'])
+def get_person_data():
+    """
+    Get person data from the DB
+    """
+    person_id = request.data
+    return jsonify(RECORDS_DB[person_id])
 
 
 if __name__ == '__main__':
