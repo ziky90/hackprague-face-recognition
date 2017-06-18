@@ -5,13 +5,11 @@ Copyright (c) 2017 Jan Zikes zikesjan@gmail.com
 """
 
 import base64
-from io import BytesIO
 
 import cv2
-from PIL import Image
 from flask import Flask, request, jsonify, json
+from flask_cors import CORS
 from keras.models import load_model
-import numpy as np
 
 from face_classifier.main_predict_tools import predict_image
 from face_detector.face_detector_tools import locate_faces, crop_image
@@ -21,7 +19,7 @@ MODEL_PATH = 'model_long/model.h5'
 
 model = load_model(MODEL_PATH)
 app = Flask(__name__)
-
+cors = CORS(app, resources={r"*": {"origins": "*"}})
 
 @app.route('/')
 def index():
