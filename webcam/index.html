@@ -17,7 +17,6 @@
 	<h1>Personalised content based on face recognition</h1>
 
 	<div id="results" style="position: relative;">
-		<div id="box" style="position: absolute; left: 20px; top: 20px; width: 200px; height: 200px; border: 1px solid green;"></div>
 		Your captured image will appear here...</div>
 
 	<div id="my_camera"></div>
@@ -38,20 +37,41 @@
 		Webcam.attach( '#my_camera' );
 	</script>
 
+	<div id="response">Waiting for response...</div>
+
 	<!-- Code to handle taking the snapshot and displaying it locally -->
+
 	<script language="JavaScript">
+		function getAnyValue(obj) {
+			for (var key in obj) {
+				return obj[key];
+			}
+		};
+
+		function responseToHtml(data) {
+			return "<div>Gender: " + data.metadata[0] + " </div>" +
+			"<div>Name: " + data.metadata[2] + " </div>" +
+			"<div>Age: " + data.metadata[1] + " </div>"
+		}
+
 		function take_snapshot() {
 			// take snapshot and get image data
 			Webcam.snap( function(data_uri) {
 				// display results in page
 				document.getElementById('results').innerHTML =
-					'<img id="photoSource" src="'+data_uri+'"/>';
+					'<img id="photoSource" src="'+data_uri+'"/><div id="box" style="position: absolute; left: 20px; top: 20px; width: 200px; height: 200px; border: 1px solid green;"></div>';
 
 				var xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function() {
 						if (this.readyState == 4 && this.status == 200) {
 							console.log('RESPONSE:', xhttp.responseText);
-							document.getElementById('response').innerHTML = xhttp.responseText;
+							parsedData = getAnyValue(JSON.parse(xhttp.responseText));
+							document.getElementById('response').innerHTML = responseToHtml(parsedData);
+							bbox = document.getElementById('box');
+							bbox.style.left = parsedData.bbox[0];
+							bbox.style.top = parsedData.bbox[1];
+							bbox.style.width = parsedData.bbox[2];
+							bbox.style.height = parsedData.bbox[3];
 						}
 				};
 				xhttp.open("POST", 'http://localhost:5000/analyse_image_base64', true);
