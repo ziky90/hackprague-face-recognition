@@ -1,0 +1,11 @@
+<h2>webcam:</h2>
+<!-- Define <video> object to hold webcam image -->
+
+<div><a download="save.png" [href]="getPictureURL()">Download image</a></div>
+<div><button (click)="openWindow()">OPEN FILE</button></div>
+<div><button (click)="analyzeImage()">Analyze Image</button></div>
+<video [src]="videosrc" class="cssWebCam"></video>
+<canvas></canvas>
+
+<p>See app/webcam/webcam.html for HTML, see app/webcam/webcam.css for CSS. </p>
+<p>Automatic streaming is enabled. </p>
