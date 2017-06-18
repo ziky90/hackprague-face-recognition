@@ -38,8 +38,6 @@ def analyse_image():
     face_locations = locate_faces(image)
 
     results = {}
-    if not face_locations:
-        return 'No face detected'
     for pos, face in enumerate(face_locations):
         cropped = crop_image(image, face)
         prediction = predict_image(model, cropped)
@@ -62,8 +60,6 @@ def analyse_image_base64():
     face_locations = locate_faces(image)
 
     results = {}
-    if not face_locations:
-        return 'No face detected'
     for pos, face in enumerate(face_locations):
         cropped = crop_image(image, face)
         prediction = predict_image(cropped)
@@ -83,8 +79,6 @@ def detect_face():
 
     image = cv2.imread(input_image_path)
     face_locations = locate_faces(image)
-    if not face_locations:
-        return 'No face detected'
     # TODO possibly store cropped face and return it's path
     results = {}
     for pos, face in enumerate(face_locations):
@@ -102,8 +96,6 @@ def detect_face_base64():
     image = Image.open(BytesIO(base64.b64decode(input_base64_data)))
 
     face_locations = locate_faces(image)
-    if not face_locations:
-        return 'No face detected'
     # TODO possibly store cropped face and return it's path
     results = {}
     for pos, face in enumerate(face_locations):
