@@ -53,8 +53,8 @@
 				var xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function() {
 						if (this.readyState == 4 && this.status == 200) {
-							console.log('RESPONSE:', http.responseText);
-							this.getElementById('response').innerHTML = http.responseText;
+							console.log('RESPONSE:', this.responseText);
+							this.getElementById('response').innerHTML = this.responseText;
 						}
 				};
 				xhttp.open("POST", 'http://localhost:5000/analyse_image_base64', true);
