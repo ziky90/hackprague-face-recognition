@@ -5,14 +5,14 @@ Copyright (c) 2017 Jan Zikes zikesjan@gmail.com
 """
 
 import cv2
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, json
 from keras.models import load_model
 
 from face_classifier.main_predict_tools import predict_image
 from face_detector.face_detector_tools import locate_faces, crop_image
 from http_server.people_data_db_mock import RECORDS_DB
 
-MODEL_PATH = 'model/model.h5'
+MODEL_PATH = 'model_long/model.h5'
 
 model = load_model(MODEL_PATH)
 app = Flask(__name__)
@@ -28,7 +28,7 @@ def analyse_image():
     """
     Locate the face and classify it.
     """
-    input_image_path = request.data
+    input_image_path = json.load(request.data)['image_path']
 
     image = cv2.imread(input_image_path)
     face_locations = locate_faces(image)
@@ -47,7 +47,7 @@ def detect_face():
     """
     Detect all the possible faces with their locations.
     """
-    input_image_path = request.data
+    input_image_path = json.load(request.data)['image_path']
 
     image = cv2.imread(input_image_path)
     face_locations = locate_faces(image)
@@ -60,7 +60,7 @@ def predict_face():
     """
     Predict the person given the cropped patch.
     """
-    input_face_path = request.data
+    input_face_path = json.load(request.data)['face_image']
     image = cv2.imread(input_face_path)
     prediction = predict_image(image)
     return jsonify(prediction)
@@ -71,7 +71,7 @@ def get_person_data():
     """
     Get person data from the DB
     """
-    person_id = request.data
+    person_id = json.load(request.data)['person_id']
     return jsonify(RECORDS_DB[person_id])
 
 
