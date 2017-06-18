@@ -19,7 +19,7 @@ from keras.preprocessing.image import ImageDataGenerator
 
 NUM_CLASSES = 17
 LEARNING_RATE = 0.0001
-EPOCHS = 10
+EPOCHS = 360
 BATCH_SIZE = 10
 NET_INPUT_SHAPE = (224, 224, 3)
 AUGMENT_DATA = True
@@ -79,7 +79,7 @@ def prepare_dataset(dataset_path):
 
 def custom_categorical_crossentropy_on_logits(y_true, y_pred):
     """
-    Custom categoricakl cross entropy function, because of this issue:
+    Custom categorical cross entropy function, because of this issue:
     https://github.com/fchollet/keras/issues/6983
 
     :param y_true: Real one-hot represented label
