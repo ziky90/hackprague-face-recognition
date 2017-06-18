@@ -6,7 +6,7 @@ Copyright (c) 2017 Jan Zikes zikesjan@gmail.com
 
 # ad-22489302832 — male && age >= 27
 # ad-111293091 — female
-# ad-00392389522 — male && age <= 30
+# ad-00392389522 — male && age <= 27
 
 RECORDS_DB = {
     0: ['male', 35, 'Unknown', 'ad-22489302832', '14.4378005 50.0755381'],

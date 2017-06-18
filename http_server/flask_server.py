@@ -26,7 +26,7 @@ def index():
 @app.route('/analyse_image', methods=['POST'])
 def analyse_image():
     """
-    Locate the face and classify it.
+    Locate the face and classify it + add info from DB
     """
     input_image_path = json.load(request.data)['image_path']
 
@@ -37,7 +37,7 @@ def analyse_image():
     for pos, face in enumerate(face_locations):
         cropped = crop_image(image, face)
         prediction = predict_image(cropped)
-        results[pos] = (face, prediction)
+        results[pos] = (face, prediction, RECORDS_DB[prediction])
 
     return jsonify(results)
 
