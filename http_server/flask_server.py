@@ -17,7 +17,12 @@ model = load_model(MODEL_PATH)
 app = Flask(__name__)
 
 
-@app.route("/analyse_image", methods=['POST'])
+@app.route('/')
+def index():
+    return 'test'
+
+
+@app.route('/analyse_image', methods=['POST'])
 def analyse_image():
     """
     Locate the face and classify it.
@@ -36,7 +41,7 @@ def analyse_image():
     return jsonify(results)
 
 
-@app.route("/detect_face", methods=['POST'])
+@app.route('/detect_face', methods=['POST'])
 def detect_face():
     """
     Detect all the possible faces with their locations.
@@ -45,12 +50,17 @@ def detect_face():
 
     image = cv2.imread(input_image_path)
     face_locations = locate_faces(image)
+    # TODO possibly store cropped face and return it's path
     return jsonify(face_locations)
 
 
-@app.route("/predict_face", methods=['POST'])
+@app.route('/predict_face', methods=['POST'])
 def predict_face():
     input_face_path = request.data
     image = cv2.imread(input_face_path)
     prediction = predict_image(image)
     return jsonify(prediction)
+
+
+if __name__ == '__main__':
+    app.run()
