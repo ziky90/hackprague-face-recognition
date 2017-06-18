@@ -4,6 +4,7 @@
 <div><a download="save.png" [href]="getPictureURL()">Download image</a></div>
 <div><button (click)="openWindow()">OPEN FILE</button></div>
 <div><button (click)="analyzeImage()">Analyze Image</button></div>
+<div>{{analysis}}</div>
 <video [src]="videosrc" class="cssWebCam"></video>
 <canvas></canvas>
 

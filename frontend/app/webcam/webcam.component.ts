@@ -3,6 +3,7 @@ import {Http, Response, Headers, RequestOptions} from '@angular/http';
 import {DomSanitizer} from '@angular/platform-browser';
 import 'rxjs/Rx' ;
 import {Observable} from "rxjs/Observable";
+import {IAnalysis} from "./analysis";
 
 
 
@@ -16,6 +17,7 @@ import {Observable} from "rxjs/Observable";
 
 export class WebCamComponent implements OnInit {
     public videosrc:any;
+    public analysis:IAnalysis;
 
     constructor(private sanitizer:DomSanitizer,
                 private element:ElementRef,
@@ -51,12 +53,17 @@ export class WebCamComponent implements OnInit {
         }
     }
 
-    public analyseImage(): Observable<any> {
-            let headers = new Headers({ 'Content-Type': 'application/json' });
+    public analyzeImage() {
+        console.log(this.analyseImage())
+    }
+
+
+    public analyseImage(): Observable<IAnalysis> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
-        return this._http.post("localhost:5000/analyse_image","{'image_path':'~/Downloads.save.png'}",options)
-            .map((response: Response) => <any> response.json())
-            .do(data => console.log('All: ' +  JSON.stringify(data)))
+        return this._http.post("localhost:5000/analyse_image","{'image_path':'/Users/jakubbares/Downloads.save.png'}",options)
+            .map((response: Response) => <IAnalysis> response.json())
+            .do(data => this.analysis = JSON.parse(JSON.stringify(data))[0])
             .catch(this.handleError);
     }
 
