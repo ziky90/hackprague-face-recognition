@@ -32,7 +32,7 @@ def analyse_image():
     """
     Locate the face and classify it + add info from DB
     """
-    input_image_path = json.load(request.data)['image_path']
+    input_image_path = json.loads(request.data)['image_path']
 
     image = cv2.imread(input_image_path)
     face_locations = locate_faces(image)
@@ -40,8 +40,8 @@ def analyse_image():
     results = {}
     for pos, face in enumerate(face_locations):
         cropped = crop_image(image, face)
-        prediction = predict_image(cropped)
-        results[pos] = {'bbox': face,
+        prediction = predict_image(model, cropped)
+        results[pos] = {'bbox': [int(i) for i in face],
                         'class': prediction,
                         'metadata': RECORDS_DB[prediction]}
 
@@ -54,7 +54,7 @@ def analyse_image_base64():
     Locate the face and classify it + add info from DB
     """
     # decode the base64 image
-    input_base64_data = json.load(request.data)['image']
+    input_base64_data = json.loads(request.data)['image']
     image = Image.open(BytesIO(base64.b64decode(input_base64_data)))
 
     face_locations = locate_faces(image)
@@ -73,7 +73,7 @@ def detect_face():
     """
     Detect all the possible faces with their locations.
     """
-    input_image_path = json.load(request.data)['image_path']
+    input_image_path = json.loads(request.data)['image_path']
 
     image = cv2.imread(input_image_path)
     face_locations = locate_faces(image)
@@ -87,7 +87,7 @@ def detect_face_base64():
     Detect all the possible faces with their locations.
     """
     # decode the base64 image
-    input_base64_data = json.load(request.data)['image']
+    input_base64_data = json.loads(request.data)['image']
     image = Image.open(BytesIO(base64.b64decode(input_base64_data)))
 
     face_locations = locate_faces(image)
@@ -100,7 +100,7 @@ def predict_face():
     """
     Predict the person given the cropped patch.
     """
-    input_face_path = json.load(request.data)['face_image']
+    input_face_path = json.loads(request.data)['face_image']
     image = cv2.imread(input_face_path)
     prediction = predict_image(image)
     return jsonify(prediction)

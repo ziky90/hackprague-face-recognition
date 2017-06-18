@@ -26,7 +26,7 @@ def parse_args():
     return parser.parse_args()
 
 
-def predict_image(model, image_path):
+def predict_image_path(model, image_path):
     """
     Predict image.
 
@@ -43,6 +43,12 @@ def predict_image(model, image_path):
     return np.argmax(prediction)
 
 
+def predict_image(model, image):
+    input_image = np.expand_dims(image, axis=0)
+    prediction = model.predict(input_image)
+    return np.argmax(prediction)
+
+
 def main():
     args = parse_args()
     model_path = args.model_path
@@ -50,7 +56,7 @@ def main():
 
     model = load_model(model_path)
 
-    prediction = predict_image(model, image_path)
+    prediction = predict_image_path(model, image_path)
     print prediction
 
 
