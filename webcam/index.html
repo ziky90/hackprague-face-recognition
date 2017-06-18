@@ -59,19 +59,24 @@
 			Webcam.snap( function(data_uri) {
 				// display results in page
 				document.getElementById('results').innerHTML =
-					'<img id="photoSource" src="'+data_uri+'"/><div id="box" style="position: absolute; left: 20px; top: 20px; width: 200px; height: 200px; border: 1px solid green;"></div>';
+					'<img id="photoSource" src="'+data_uri+'"/><div id="box" style="position: absolute; left: 20px; top: 20px; width: 200px; height: 200px; border: 3px solid green;"></div>';
 
 				var xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function() {
 						if (this.readyState == 4 && this.status == 200) {
 							console.log('RESPONSE:', xhttp.responseText);
 							parsedData = getAnyValue(JSON.parse(xhttp.responseText));
-							document.getElementById('response').innerHTML = responseToHtml(parsedData);
-							bbox = document.getElementById('box');
-							bbox.style.left = parsedData.bbox[0];
-							bbox.style.top = parsedData.bbox[1];
-							bbox.style.width = parsedData.bbox[2];
-							bbox.style.height = parsedData.bbox[3];
+							if (parsedData) {
+								document.getElementById('response').innerHTML = responseToHtml(parsedData);
+								bbox = document.getElementById('box');
+								bbox.style.left = parsedData.bbox[0]+"px";
+								bbox.style.top = parsedData.bbox[1]+"px";
+								bbox.style.width = parsedData.bbox[2]+"px";
+								bbox.style.height = parsedData.bbox[3]+"px";
+							}else {
+								document.getElementById('response').innerHTML = "";
+							}
+
 						}
 				};
 				xhttp.open("POST", 'http://localhost:5000/analyse_image_base64', true);
