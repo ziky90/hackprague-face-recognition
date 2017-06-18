@@ -12,5 +12,5 @@ It works based on the [Viola Jones object detection framework](https://en.wikipe
 Implementation of the face detector is available in the `face_classifier` folder.
 Model is based on the pretarined [VGG-16](http://www.robots.ox.ac.uk/~vgg/research/very_deep/) neral network that is being fine-tuned for the desired faces.
 
-## Http server
+## Http Server
 Using easy Flask server.
