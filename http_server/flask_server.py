@@ -54,8 +54,7 @@ def analyse_image_base64():
     Locate the face and classify it + add info from DB
     """
     # decode the base64 image
-    input_base64_data = json.loads(request.data)['image']
-    image = Image.open(BytesIO(base64.b64decode(input_base64_data)))
+    image = Image.open(BytesIO(base64.b64decode(request.data)))
 
     face_locations = locate_faces(image)
 
@@ -92,8 +91,7 @@ def detect_face_base64():
     Detect all the possible faces with their locations.
     """
     # decode the base64 image
-    input_base64_data = json.loads(request.data)['image']
-    image = Image.open(BytesIO(base64.b64decode(input_base64_data)))
+    image = Image.open(BytesIO(base64.b64decode(request.data)))
 
     face_locations = locate_faces(image)
     # TODO possibly store cropped face and return it's path
