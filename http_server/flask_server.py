@@ -11,6 +11,7 @@ import cv2
 from PIL import Image
 from flask import Flask, request, jsonify, json
 from keras.models import load_model
+import numpy as np
 
 from face_classifier.main_predict_tools import predict_image
 from face_detector.face_detector_tools import locate_faces, crop_image
@@ -53,15 +54,20 @@ def analyse_image_base64():
     """
     Locate the face and classify it + add info from DB
     """
+    data = request.data.replace('data:image/jpeg;base64', '')
     # decode the base64 image
-    image = Image.open(BytesIO(base64.b64decode(request.data)))
+    imgdata = base64.b64decode(data)
+    filename = 'image_to_process.jpg'
+    with open(filename, 'wb') as f:
+        f.write(imgdata)
 
+    image = cv2.imread(filename)
     face_locations = locate_faces(image)
 
     results = {}
     for pos, face in enumerate(face_locations):
         cropped = crop_image(image, face)
-        prediction = predict_image(cropped)
+        prediction = predict_image(model, cropped)
         results[pos] = {'bbox': [int(i) for i in face],
                         'class': prediction,
                         'metadata': RECORDS_DB[prediction]}
@@ -90,9 +96,14 @@ def detect_face_base64():
     """
     Detect all the possible faces with their locations.
     """
+    data = request.data.replace('data:image/jpeg;base64', '')
     # decode the base64 image
-    image = Image.open(BytesIO(base64.b64decode(request.data)))
+    imgdata = base64.b64decode(data)
+    filename = 'image_to_process.jpg'
+    with open(filename, 'wb') as f:
+        f.write(imgdata)
 
+    image = cv2.imread(filename)
     face_locations = locate_faces(image)
     # TODO possibly store cropped face and return it's path
     results = {}
