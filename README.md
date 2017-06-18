@@ -14,3 +14,6 @@ Model is based on the pretarined [VGG-16](http://www.robots.ox.ac.uk/~vgg/resear
 
 ## Http Server
 Using easy Flask server.
+
+## Frontend
+Implementation of the frontend is in the folder `frontend` and it's implemented in AngularJS
