@@ -1,5 +1,5 @@
 # Hackprague face-recognition
-Face recognition app for marketing built during the HackPrague hackathon.
+Face recognition app for marketing built during the [HackPrague hackathon](https://devpost.com/software/hackprague-face-recognition).
 
 ## Face detection
 Implementation of the face detector is in the folder `face_detector`.
