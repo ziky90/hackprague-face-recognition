@@ -14,6 +14,7 @@ Model is based on the pretarined [VGG-16](http://www.robots.ox.ac.uk/~vgg/resear
 
 ## Http Server
 Using easy Flask server.
+It can be run by `python http_server/flask_server.py` + you have to set the custom path to to your trained model in the server file.
 
 ## Frontend
 Implementation of the frontend is in the folder `webcam` and it's implemented in HTML and JavaScript.
