@@ -18,6 +18,7 @@ It can be run by `python http_server/flask_server.py` + you have to set the cust
 
 ## Frontend
 Implementation of the frontend is in the folder `webcam` and it's implemented in HTML and JavaScript.
+You can run it by `cd webcam` and `node index.js` and opening the url from the terminal in your browser.
 
 ### Example frontend screenshot
 ![Frontend screenshot](resources/image_frontend.png)
